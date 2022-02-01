@@ -5,7 +5,7 @@ Programmed the connect four game using Java.
 It has the following features:
 
 * Multiplayer (player vs player)
-* Play against undefeatable computer
+* Play against undefeatable AIPlayer (player vs AIPlayer)
 
 The computer was implemented using the following:
 
