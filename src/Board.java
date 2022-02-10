@@ -8,12 +8,13 @@ public class Board {
 	private char[][] board;
 	private int latestRow;
 	private int latestCol;
-	private char emptySlot = '\u0000';
+	private char emptySlot = '\u0000';			// To store empty characters
 
 	public Board() {
 		this.board = new char[NUM_OF_ROW][NUM_OF_COLUMNS];
 	}
 
+	// Displays the state of the board
 	public void printBoard() {
 		for (int row = 0; row < this.NUM_OF_ROW; row++) {
 			for (int column = 0; column < this.NUM_OF_COLUMNS; column++) {
@@ -35,7 +36,8 @@ public class Board {
 		}
 	}
 
-	//Insert board instance
+	// Inserts symbol to the column passed as the parameters
+	// This is only to change the state of the class's board attribute
 	public void insert(char symbol, int column) {
 		for (int row = 1; row < this.NUM_OF_ROW; row++) {
 			if (this.board[row][column] != 0) {
@@ -54,7 +56,8 @@ public class Board {
 		}
 	}
 
-	//Insert copy of the board
+	// Insert copy of the board
+	// Changes the state of the copy of a board
 	public void insertCopy(char[][] boardCopy, char symbol, int column){
 		for (int row = 1; row < this.NUM_OF_ROW; row++) {
 			if (boardCopy[row][column] != 0) {
@@ -67,6 +70,8 @@ public class Board {
 			}
 		}
 	}
+
+	// Checks whether an insert is valid for the class's board attribute
 	public boolean checkInsert(int column) {
 		if (this.board[0][column] != 0) {
 			return false;
@@ -74,6 +79,7 @@ public class Board {
 		return true;
 	}
 
+	// Checks whether the class's board attribute contain's a winner
 	public boolean containsWin() {
 		// check horizontal
 		if (this.latestRow <= 2 && this.board[latestRow][latestCol] != 0) {
@@ -123,6 +129,7 @@ public class Board {
 	}
 
 	// Fetches the best moves out of all the columns
+	// It passes in a copy of the board so that the singleton board is not mutated
 	public int getBestMove(char[][] bCopy, char symbol, char opponentSym){
 		ArrayList<Integer> validCol = validColumns(bCopy);
 		char[][] boardCopy = new char[6][7];
@@ -144,7 +151,7 @@ public class Board {
 		return bestCol;
 	}
 
-	//calculates the score of each column
+	// Calculates the score of each column
 	private int calcScore(char[][] boardCopy, char symbol, char opponentSymbol){
 		int maxScore = 0;
 		// prioritizing center column
@@ -200,6 +207,7 @@ public class Board {
 		return maxScore;
 	}
 
+	// Helper function for the "calcScore" method
 	private int evalArrayFourScore(char[] window, char symbol, char opponentSymbol){
 		int score = 0;
 		if (duplicates(window, symbol) == 4){
@@ -215,6 +223,18 @@ public class Board {
 		return score;
 	}
 
+	// Helper function for the "calcScore" that calculates the number of duplicates in the given array
+	public int duplicates(char[] arraySymbols, char symbol){
+		int counter = 0;
+		for (char sym : arraySymbols){
+			if (sym == symbol){
+				counter ++;
+			}
+		}
+		return counter;
+	}
+
+	// Returns a pair of tuple that contains the best score and column respectively
 	public int [] miniMax(char[][] boardCopy, int depth, int alpha, int beta, boolean isAIPlayer, char AIsymbol, char opponentSymbol){
 		ArrayList<Integer> validCol = validColumns(boardCopy);
 
@@ -288,6 +308,7 @@ public class Board {
 		}
 	}
 
+	// Helper function for "miniMax" method to help determine the base case of the recursion
 	private boolean terminalNode(char[][] boardCopy, char symbol, char opponentSymbol){
 		if (boardCopyWinner(boardCopy, symbol) || boardCopyWinner(boardCopy, opponentSymbol) || validColumns(boardCopy).size() == 0){
 			return true;
@@ -295,18 +316,8 @@ public class Board {
 		return false;
 	}
 
-	//count the number of duplicates
-	public int duplicates(char[] arraySymbols, char symbol){
-		int counter = 0;
-		for (char sym : arraySymbols){
-			if (sym == symbol){
-				counter ++;
-			}
-		}
-		return counter;
-	}
 
-	//Get all valid columns
+	// Returns an array list of integers that carries the index of all the columns that is valid to be dropped
 	public ArrayList<Integer> validColumns(char [][] boardCopy){
 		ArrayList<Integer> validDrops = new ArrayList<>();
 		for (int column = 0; column < NUM_OF_COLUMNS; column ++){
@@ -317,6 +328,7 @@ public class Board {
 		return validDrops;
 	}
 
+	// Checks whether the game is tied by checking if all the columns are full
 	public boolean isTie() {
 		for (int row = 0; row < this.NUM_OF_ROW; row++) {
 			for (int column = 0; column < this.NUM_OF_COLUMNS; column++) {
@@ -332,6 +344,7 @@ public class Board {
 		this.board = new char[NUM_OF_ROW][NUM_OF_COLUMNS];
 	}
 
+	// Takes in board and a symbol as attributes and checks whether the symbol is a winner
 	private boolean boardCopyWinner(char [][] boardCopy, char symbol){
 		// check horizontal
 		for (int col = 0; col < NUM_OF_COLUMNS-3; col++){
@@ -379,6 +392,8 @@ public class Board {
 		}
 		return false;
 	}
+
+	// Copies the state of the board to a different matrix and returns it
 	public char[][] boardCopy(){
 		char[][] boardCopy = new char[NUM_OF_ROW][NUM_OF_COLUMNS];
 		for (int i = 0; i < 6; i++){

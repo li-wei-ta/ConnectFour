@@ -9,7 +9,7 @@ public class ConnectFour {
 		this.board = board;
 		isP1Turn = true;
 	}
-	
+
 	public void setPlayer1(Player player1) {
 		this.player1 = player1; 
 	}
@@ -17,7 +17,8 @@ public class ConnectFour {
 	public void setPlayer2(Player player2) {
 		this.player2 = player2; 
 	}
-	
+
+	// A method that runs until a winner is established or the game has tied
 	public void playGame(){
 		board.reset();
 		board.printBoard();

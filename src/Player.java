@@ -1,3 +1,4 @@
+// abstract parent class with an abstract method of makeMove()
 public abstract class Player {
 	
 	protected char symbol;
